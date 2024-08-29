@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import LoginPage from './components/LoginPage';
+import PostsPage from './components/PostsPage';
+import CommentsPage from './components/CommentsPage';
 
 function App() {
+  const isAuthenticated = !!localStorage.getItem('authenticated');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+      <Route path="/" element={<LoginPage />} />
+        <Route path="/posts" element={isAuthenticated ? <PostsPage /> : <Navigate to="/" />} />
+   <Route path="/posts/comments/:postId" element={isAuthenticated ? <CommentsPage /> : <Navigate to="/" />} />
+
+      </Routes>
+    </Router>
   );
 }
 
 export default App;
+
